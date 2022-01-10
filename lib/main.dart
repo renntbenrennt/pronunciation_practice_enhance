@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 late List<CameraDescription> cameras;
@@ -39,11 +40,19 @@ class _MyHomePageState extends State<MyHomePage> {
   Color gray = const Color.fromRGBO(107, 107, 107, 1);
   Color lightGray = const Color.fromRGBO(107, 107, 107, .5);
 
+  late int numOfCamera;
+
   @override
   void initState() {
     super.initState();
+
+    // 0 is the default back camera if the app is running on the phone
+    // but we want the front camera so set it to 1
+    // however, when it's on web/browser, here assume there's only one camera, so it's 0
+    numOfCamera = kIsWeb ? 0 : 1;
+
     controller = CameraController(
-      cameras[1],
+      cameras[0],
       ResolutionPreset.max,
     );
     controller.initialize().then((_) {
